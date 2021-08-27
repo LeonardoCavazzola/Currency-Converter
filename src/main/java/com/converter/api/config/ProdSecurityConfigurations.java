@@ -5,6 +5,7 @@ import com.converter.api.service.AuthenticationService;
 import com.converter.api.service.TokenService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,15 +17,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@Profile("prod")
 @EnableWebSecurity
 @Configuration
-public class SecurityConfigurations extends WebSecurityConfigurerAdapter {
+public class ProdSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     private final AuthenticationService autenticacaoService;
     private final TokenService tokenService;
     private final UserRepository userRepository;
 
-    public SecurityConfigurations(AuthenticationService authenticationService, TokenService tokenService, UserRepository userRepository) {
+    public ProdSecurityConfigurations(AuthenticationService authenticationService, TokenService tokenService, UserRepository userRepository) {
         this.autenticacaoService = authenticationService;
         this.tokenService = tokenService;
         this.userRepository = userRepository;
