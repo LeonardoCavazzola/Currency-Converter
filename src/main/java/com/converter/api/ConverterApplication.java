@@ -16,7 +16,7 @@ public class ConverterApplication {
     }
 
     @Bean
-    @Profile("dev")
+    @Profile({"dev"})
     public CommandLineRunner generateDevUser(UserService userService){
         return args -> userService.create(new User("email@email.com", "12345678"));
     }
