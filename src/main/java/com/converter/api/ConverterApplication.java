@@ -1,7 +1,6 @@
 package com.converter.api;
 
 import com.converter.api.model.User;
-import com.converter.api.repository.UserRepository;
 import com.converter.api.service.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

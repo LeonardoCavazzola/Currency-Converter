@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Transaction {
+public class Conversion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,7 @@ public class Transaction {
     private BigDecimal conversionRate;
     private LocalDateTime transactionTime;
 
-    public Transaction(User user, String originCur, BigDecimal originValue, String destinyCur, BigDecimal conversionRate) {
+    public Conversion(User user, String originCur, BigDecimal originValue, String destinyCur, BigDecimal conversionRate) {
         this.user = user;
         this.originCur = originCur;
         this.originValue = originValue;
@@ -33,7 +33,7 @@ public class Transaction {
         this.transactionTime = LocalDateTime.now();
     }
 
-    public BigDecimal getdestinyValue(){
+    public BigDecimal getDestinyValue(){
         return originValue.multiply(conversionRate);
     }
 }
