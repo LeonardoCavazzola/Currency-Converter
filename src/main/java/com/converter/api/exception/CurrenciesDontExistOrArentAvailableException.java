@@ -4,6 +4,6 @@ public class CurrenciesDontExistOrArentAvailableException extends RuntimeExcepti
 
     @Override
     public String getMessage() {
-        return "One or more Currencies do not exist or are not available";
+        return "One or more currencies do not exist or are not available";
     }
 }

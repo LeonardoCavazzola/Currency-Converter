@@ -1,6 +1,7 @@
 package com.converter.api.controller;
 
 import com.converter.api.dto.ExpetionView;
+import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -25,6 +26,13 @@ public class ExceptionHandlerController {
             dto.add(error);
         });
         return dto;
+    }
+
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(CurrenciesDontExistOrArentAvailableException.class)
+    public ExpetionView handle(CurrenciesDontExistOrArentAvailableException exception) {
+
+        return new ExpetionView("originCurrency and/or destinyCurrency", exception.getMessage());
     }
 
 
