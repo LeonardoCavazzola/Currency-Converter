@@ -3,6 +3,7 @@ package com.converter.api.controller;
 import com.converter.api.dto.UserForm;
 import com.converter.api.dto.UserView;
 import com.converter.api.model.User;
+import com.converter.api.service.AbstractUserService;
 import com.converter.api.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class UserController {
     @PostMapping
     @Transactional
     public ResponseEntity<UserView> create(@Valid @RequestBody UserForm form, UriComponentsBuilder builder) {
-        User user = userService.create(form);
+        User user = userService.create(new User(form.email(), form.password()));
 
         URI uri = builder
                 .path("/users")
