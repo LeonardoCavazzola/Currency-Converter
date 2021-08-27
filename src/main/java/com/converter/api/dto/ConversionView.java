@@ -2,12 +2,13 @@ package com.converter.api.dto;
 
 import com.converter.api.model.Conversion;
 import lombok.Getter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-public class ConversionView {
+public class ConversionView extends RepresentationModel<ConversionView> {
 
     private final Long id;
     private final Long userId;
