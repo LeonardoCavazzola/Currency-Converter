@@ -25,8 +25,7 @@ public class ConversionController {
     @Transactional
     public ResponseEntity<ConversionView> convert(@Valid @RequestBody ConversionForm form) {
         Conversion converted = conversionService.convert(form.originCurrency(), form.destinyCurrency(), form.originValue());
-
-
+        converted = conversionService.create(converted);
         return ResponseEntity.ok(new ConversionView(converted));
     }
 }

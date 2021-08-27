@@ -59,10 +59,13 @@ public class ConversionService {
 
         try {
             BigDecimal convertionRateResult = destinyRate.divide(originRate, RoundingMode.HALF_UP);
-            Conversion conversion = new Conversion(userService.getLoggedUser(), originCurrency, originValue, destinyCurrency, convertionRateResult);
-            return conversionRepository.save(conversion);
+            return new Conversion(userService.getLoggedUser(), originCurrency, originValue, destinyCurrency, convertionRateResult);
         } catch (NullPointerException e) {
             throw new CurrenciesDontExistOrArentAvailableException();
         }
+    }
+
+    public Conversion create(Conversion conversion){
+        return conversionRepository.save(conversion);
     }
 }
