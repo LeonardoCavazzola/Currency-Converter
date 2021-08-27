@@ -5,6 +5,8 @@ import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException;
 import com.converter.api.model.Conversion;
 import com.converter.api.repository.ConversionRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class ConversionService {
         this.userService = userService;
     }
 
-    private RatesResponse getRates(String... currencies) {
+    public RatesResponse getRates(String... currencies) {
 
         String path = "http://api.exchangeratesapi.io" +
                 "/v1" +
@@ -48,6 +50,10 @@ public class ConversionService {
                 RatesResponse.class);
 
         return response.getBody();
+    }
+
+    public Page<Conversion> getMyConvetions(Pageable pageable){
+        return conversionRepository.findAllByUser(userService.getLoggedUser(), pageable);
     }
 
     public Conversion convert(String originCurrency, String destinyCurrency, BigDecimal originValue) {

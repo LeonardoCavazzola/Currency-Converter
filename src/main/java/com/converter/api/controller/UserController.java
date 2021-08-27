@@ -3,10 +3,12 @@ package com.converter.api.controller;
 import com.converter.api.dto.UserForm;
 import com.converter.api.dto.UserView;
 import com.converter.api.model.User;
-import com.converter.api.service.AbstractUserService;
 import com.converter.api.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
