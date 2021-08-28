@@ -1,5 +1,6 @@
 package com.converter.api.config;
 
+import com.converter.api.exception.TokenException;
 import com.converter.api.model.User;
 import com.converter.api.repository.UserRepository;
 import com.converter.api.service.TokenService;
@@ -12,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.NoSuchElementException;
 
 public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
@@ -38,9 +40,13 @@ public class AuthenticationTokenFilter extends OncePerRequestFilter {
 
     private void autenticateUser(String token) {
         Long userId = tokenService.getUserId(token);
-        User user = userRepository.findById(userId).get();
-        UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        try {
+            User user = userRepository.findById(userId).get();
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (NoSuchElementException e){
+            throw new TokenException();
+        }
     }
 
     private String recoverToken(HttpServletRequest request) {

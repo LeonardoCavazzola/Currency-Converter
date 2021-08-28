@@ -2,6 +2,7 @@ package com.converter.api.controller;
 
 import com.converter.api.dto.ExpetionView;
 import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException;
+import com.converter.api.exception.TokenException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,5 +36,11 @@ public class ExceptionHandlerController {
         return new ExpetionView("originCurrency and/or destinyCurrency", exception.getMessage());
     }
 
+    @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(TokenException.class)
+    public ExpetionView handle(TokenException exception) {
+
+        return new ExpetionView("Bearer Token", exception.getMessage());
+    }
 
 }
