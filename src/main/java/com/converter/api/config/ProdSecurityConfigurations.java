@@ -22,12 +22,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class ProdSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
-    private final AuthenticationService autenticacaoService;
+    private final AuthenticationService authenticationService;
     private final TokenService tokenService;
     private final UserRepository userRepository;
 
     public ProdSecurityConfigurations(AuthenticationService authenticationService, TokenService tokenService, UserRepository userRepository) {
-        this.autenticacaoService = authenticationService;
+        this.authenticationService = authenticationService;
         this.tokenService = tokenService;
         this.userRepository = userRepository;
     }
@@ -40,14 +40,14 @@ public class ProdSecurityConfigurations extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .antMatchers(HttpMethod.POST, "/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/users").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
@@ -59,5 +59,4 @@ public class ProdSecurityConfigurations extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
     }
-
 }

@@ -2,6 +2,7 @@ package com.converter.api.service;
 
 import com.converter.api.model.User;
 import com.converter.api.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,19 +13,16 @@ import java.util.Optional;
 @Service
 public class AuthenticationService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-
-    public AuthenticationService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findByEmail(email);
-        if (user.isPresent()) {
-            return user.get();
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Optional<User> usuario = repository.findByEmail(username);
+        if (usuario.isPresent()) {
+            return usuario.get();
         }
 
-        throw new UsernameNotFoundException("The data entered is invalid!");
+        throw new UsernameNotFoundException("Dados inválidos!");
     }
 }

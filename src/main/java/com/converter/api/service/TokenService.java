@@ -23,7 +23,6 @@ public class TokenService {
 
     public String generateToken(Authentication authentication) {
         User logged = (User) authentication.getPrincipal();
-
         Date today = new Date();
         Date expirationDate = new Date(today.getTime() + Long.parseLong(expiration));
 
