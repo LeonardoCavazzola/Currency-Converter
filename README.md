@@ -27,11 +27,15 @@
 **1.1.2** - password (mandatory, have between 8 and 24 characters).  
 **1.2** - Example:
 
+![postman com novo usuario](https://drive.google.com/file/d/1VyJr_Yl8uERDZSZEqB7_Nn1GSMGjws7f/view?usp=sharing)
+
 **2** - **Get access token:**  
 **2.1** - Send a POST request to endpoint "/auth" with following body:  
 **2.1.1** - email (mandatory).  
 **3.1.2** - password (mandatory).  
 **2.2** - Example:
+
+![obtendo token no postman](https://drive.google.com/file/d/14rCKckliRavdgas5RlHJh4uJZkyBTUIm/view?usp=sharing)
 
 **3** - **Convert currencies:**  
 **3.1** - Send a POST request to endpoint "/convertions" with following body and add the your token:  
@@ -40,9 +44,13 @@
 **3.1.3** - destinyCurrency (mandatory, 3 characters).  
 **3.2** - Example:
 
+![fazendo uma converção no postman](https://drive.google.com/file/d/1MfbaCoLLqNsx25jm3YdpMMYigcZDCE3g/view?usp=sharing)
+
 **4** - **Get my past conventions:**  
 **4.1** - Send a GET request to endpoint "/convertions" with your token.  
 **4.2** - Example:  
+
+![obtendo historico no postman](https://drive.google.com/file/d/1VP1PRDE5i3b2LUtGuDm5a1cd2q2y2LMc/view?usp=sharing)
 
 ## How was developing this application (Portuguese) (Não concluido)
 
