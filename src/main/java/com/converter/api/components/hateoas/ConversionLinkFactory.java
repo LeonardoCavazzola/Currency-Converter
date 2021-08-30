@@ -6,7 +6,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class LinkFactoryImplementation implements LinkFactory {
+public class ConversionLinkFactory {
 
     public Link getAllMyConversions(){
         return WebMvcLinkBuilder.linkTo(

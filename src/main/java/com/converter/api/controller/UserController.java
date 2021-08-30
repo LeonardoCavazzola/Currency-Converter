@@ -1,5 +1,6 @@
 package com.converter.api.controller;
 
+import com.converter.api.components.hateoas.UserLinkFactory;
 import com.converter.api.dto.UserForm;
 import com.converter.api.dto.UserView;
 import com.converter.api.model.User;
@@ -20,9 +21,11 @@ import java.net.URI;
 public class UserController {
 
     private final UserService userService;
+    private final UserLinkFactory userLinkFactory;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserLinkFactory userLinkFactory) {
         this.userService = userService;
+        this.userLinkFactory = userLinkFactory;
     }
 
     @PostMapping
@@ -35,6 +38,9 @@ public class UserController {
                 .buildAndExpand(user.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(new UserView(user));
+        UserView userView = new UserView(user);
+        userView.add(userLinkFactory.getAuthLink());
+
+        return ResponseEntity.created(uri).body(userView);
     }
 }

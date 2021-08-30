@@ -1,6 +1,6 @@
 package com.converter.api.controller;
 
-import com.converter.api.components.hateoas.LinkFactory;
+import com.converter.api.components.hateoas.ConversionLinkFactory;
 import com.converter.api.dto.ConversionForm;
 import com.converter.api.dto.ConversionView;
 import com.converter.api.model.Conversion;
@@ -24,11 +24,11 @@ import java.net.URI;
 public class ConversionController {
 
     private final ConversionService conversionService;
-    private final LinkFactory linkFactory;
+    private final ConversionLinkFactory conversionLinkFactory;
 
-    public ConversionController(ConversionService conversionService, LinkFactory linkFactory) {
+    public ConversionController(ConversionService conversionService, ConversionLinkFactory conversionLinkFactory) {
         this.conversionService = conversionService;
-        this.linkFactory = linkFactory;
+        this.conversionLinkFactory = conversionLinkFactory;
     }
 
     @GetMapping
@@ -39,7 +39,11 @@ public class ConversionController {
                 new HateoasPageableHandlerMethodArgumentResolver(),
                 builder.path("/convertions").build());
 
-        return pra.toModel(page);
+        PagedModel<EntityModel<ConversionView>> pagedModel = pra.toModel(page);
+        pagedModel.add(conversionLinkFactory.convert());
+
+        return pagedModel;
+
     }
 
     @PostMapping
@@ -55,8 +59,8 @@ public class ConversionController {
                 .buildAndExpand(converted.getId())
                 .toUri();
 
-        conversionView.add(linkFactory.getAllMyConversions());
-        conversionView.add(linkFactory.convert());
+        conversionView.add(conversionLinkFactory.getAllMyConversions());
+        conversionView.add(conversionLinkFactory.convert());
 
         return ResponseEntity.created(uri).body(conversionView);
     }
