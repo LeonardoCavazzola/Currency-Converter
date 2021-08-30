@@ -1,5 +1,7 @@
 # Currency Converter
 
+This API is available at https://curconverter.herokuapp.com/
+
 ## How To Run Application:
 
 * This application has two possible profiles, one for development and testing environment and other for production environment.
@@ -18,6 +20,7 @@
 **2.1.4** - datasource.password="*password to access the H2 databas*e";  
 **2.1.5** - jwt.secret="*random security string*";  
 **2.1.6** - api.key="*your exchangeratesapi api key*";  
+**2.1.7** - PORT="*port you want to run*";  
 
 ## How To Use The Application  
 
@@ -52,7 +55,7 @@
 
 ![obtendo historico no postman](https://github.com/LeonardoCavazzola/currency-converter/blob/main/src/main/resources/images/allcerrto.PNG)
 
-## How was developing this application (Portuguese) (Não concluido)
+## How was developing this application (Portuguese)
 
 Nesse textinho pretendo expor o detalhes do desenvolvimento dessa aplicação.
 
