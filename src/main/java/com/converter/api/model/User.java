@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String password;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    private List<Perfil> perfis = new ArrayList<>();
+    private List<Authority> authoritys = new ArrayList<>();
 
     public User(String email, String password) {
         this.email = email;
@@ -38,7 +38,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.perfis;
+        return this.authoritys;
     }
 
     @Override

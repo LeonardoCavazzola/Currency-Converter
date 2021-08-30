@@ -12,7 +12,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Getter
 @Entity
-public class Perfil implements GrantedAuthority {
+public class Authority implements GrantedAuthority {
 
     private static final long serialVersionUID = 1L;
 

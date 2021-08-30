@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
@@ -20,16 +21,16 @@ public class Conversion {
     @ManyToOne
     private User user;
 
-    @Column(nullable = false, precision = 6)
+    @Column(nullable = false)
     private String originCur;
 
-    @Column(nullable = false, precision = 6)
+    @Column(nullable = false, scale = 6, precision = 18)
     private BigDecimal originValue;
 
     @Column(nullable = false)
     private String destinyCur;
 
-    @Column(nullable = false, precision = 6)
+    @Column(nullable = false, scale = 6, precision = 18)
     private BigDecimal conversionRate;
 
     @Column(nullable = false)
@@ -45,6 +46,6 @@ public class Conversion {
     }
 
     public BigDecimal getDestinyValue(){
-        return originValue.multiply(conversionRate);
+        return originValue.multiply(conversionRate, MathContext.DECIMAL32);
     }
 }
