@@ -64,7 +64,7 @@ public class ConversionService {
         BigDecimal destinyRate = rates.get(destinyCurrency);
 
         try {
-            BigDecimal convertionRateResult = destinyRate.divide(originRate, RoundingMode.HALF_UP);
+            BigDecimal convertionRateResult = destinyRate.divide(originRate, 6, RoundingMode.HALF_UP);
             return new Conversion(userService.getLoggedUser(), originCurrency, originValue, destinyCurrency, convertionRateResult);
         } catch (NullPointerException e) {
             throw new CurrenciesDontExistOrArentAvailableException();
