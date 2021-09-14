@@ -1,11 +1,11 @@
-package com.converter.api.service;
+package com.converter.api.service
 
-import com.converter.api.model.User;
-import org.springframework.stereotype.Service;
+import com.converter.api.model.User
+import org.springframework.stereotype.Service
 
 @Service
-public interface UserService {
+interface UserService {
 
-    User getLoggedUser();
-    User create(User user);
+    fun getLoggedUser(): User
+    fun create(user: User): User
 }

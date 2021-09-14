@@ -1,77 +1,74 @@
-package com.converter.api.service;
+package com.converter.api.service
 
-import com.converter.api.dto.RatesResponse;
-import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException;
-import com.converter.api.model.Conversion;
-import com.converter.api.repository.ConversionRepository;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
+import com.converter.api.dto.RatesResponse
+import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException
+import com.converter.api.model.Conversion
+import com.converter.api.repository.ConversionRepository
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.http.HttpMethod
+import org.springframework.stereotype.Service
+import org.springframework.web.client.RestTemplate
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.util.*
+import java.util.concurrent.atomic.AtomicReference
 
 @Service
-public class ConversionService {
+class ConversionService(
+    private val conversionRepository: ConversionRepository,
+    private val userService: UserService,
+    @Value("\${api.key}") private val key: String
+) {
+    private val client = RestTemplate() // TODO: 14/09/2021 fazer um @Bean
 
-    private final RestTemplate client = new RestTemplate();
-    private final ConversionRepository conversionRepository;
-    private final UserService userService;
+    fun getRates(vararg currencies: String): RatesResponse {
 
-    @Value("${api.key}")
-    private String key;
-
-    public ConversionService(ConversionRepository conversionRepository, UserService userService) {
-        this.conversionRepository = conversionRepository;
-        this.userService = userService;
-    }
-
-    public RatesResponse getRates(String... currencies) {
-
-        String path = "http://api.exchangeratesapi.io" +
+        val path = "http://api.exchangeratesapi.io" +
                 "/v1" +
                 "/latest" +
                 "?access_key=" + key +
-                "&symbols=";
+                "&symbols="
 
-        AtomicReference<String> url = new AtomicReference<>(path);
-        Arrays.stream(currencies).forEach(s -> url.set(url + s + ","));
+        val url = AtomicReference(path)
+        Arrays.stream(currencies).forEach { s: String -> url.set("$url$s,") }
 
-        ResponseEntity<RatesResponse> response = client.exchange(url.get(),
-                HttpMethod.GET,
-                null,
-                RatesResponse.class);
+        val response = client.exchange(
+            url.get(),
+            HttpMethod.GET,
+            null,
+            RatesResponse::class.java
+        )
 
-        return response.getBody();
+        return response.body
     }
 
-    public Page<Conversion> getMyConvetions(Pageable pageable){
-        return conversionRepository.findAllByUser(userService.getLoggedUser(), pageable);
+    fun getMyConvetions(pageable: Pageable?): Page<Conversion> {
+        return conversionRepository.findAllByUser(userService.getLoggedUser(), pageable)
     }
 
-    public Conversion convert(String originCurrency, String destinyCurrency, BigDecimal originValue) {
+    fun convert(originCurrency: String, destinyCurrency: String, originValue: BigDecimal): Conversion {
 
-        Map<String, BigDecimal> rates = getRates(originCurrency, destinyCurrency).rates();
+        val rates = getRates(originCurrency, destinyCurrency).rates
+        val originRate = rates[originCurrency]
+        val destinyRate = rates[destinyCurrency]
 
-        BigDecimal originRate = rates.get(originCurrency);
-        BigDecimal destinyRate = rates.get(destinyCurrency);
+        return try { // TODO: 14/09/2021 ver se da pra aplicar "?:"
+            val convertionRateResult = destinyRate!!.divide(originRate, 6, RoundingMode.HALF_UP)
 
-        try {
-            BigDecimal convertionRateResult = destinyRate.divide(originRate, 6, RoundingMode.HALF_UP);
-            return new Conversion(userService.getLoggedUser(), originCurrency, originValue, destinyCurrency, convertionRateResult);
-        } catch (NullPointerException e) {
-            throw new CurrenciesDontExistOrArentAvailableException();
+            Conversion(
+                user = userService.getLoggedUser(),
+                originCur = originCurrency,
+                originValue = originValue,
+                destinyCur = destinyCurrency,
+                conversionRate = convertionRateResult)
+        } catch (e: NullPointerException) {
+            throw CurrenciesDontExistOrArentAvailableException()
         }
     }
 
-    public Conversion create(Conversion conversion){
-        return conversionRepository.save(conversion);
+    fun create(conversion: Conversion): Conversion {
+        return conversionRepository.save(conversion)
     }
 }

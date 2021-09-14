@@ -1,30 +1,23 @@
-package com.converter.api.service;
+package com.converter.api.service
 
-import com.converter.api.model.User;
-import com.converter.api.repository.UserRepository;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-
-import java.util.Optional;
+import com.converter.api.repository.UserRepository
+import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
+import org.springframework.stereotype.Service
 
 @Service
-public class AuthenticationService implements UserDetailsService {
+class AuthenticationService(
+    private val repository: UserRepository
+) : UserDetailsService {
 
-    private final UserRepository repository;
+    override fun loadUserByUsername(username: String): UserDetails {
 
-    public AuthenticationService(UserRepository repository) {
-        this.repository = repository;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> usuario = repository.findByEmail(username);
-        if (usuario.isPresent()) {
-            return usuario.get();
+        val usuario = repository.findByEmail(username)
+        if (usuario.isPresent) {
+            return usuario.get()
         }
 
-        throw new UsernameNotFoundException("Dados inválidos!");
+        throw UsernameNotFoundException("Dados inválidos!")
     }
 }

@@ -1,24 +1,18 @@
-package com.converter.api.validation;
+package com.converter.api.validation
 
-import com.converter.api.repository.UserRepository;
+import com.converter.api.repository.UserRepository
+import javax.validation.ConstraintValidator
+import javax.validation.ConstraintValidatorContext
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+class UnregisteredUserEmailValidator(
+    private val userRepository: UserRepository
+) : ConstraintValidator<UnregisteredUserEmail, String?> {
 
-public class UnregisteredUserEmailValidator implements ConstraintValidator<UnregisteredUserEmail, String> {
-
-    private final UserRepository userRepository;
-
-    public UnregisteredUserEmailValidator(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
-    @Override
-    public boolean isValid(String email, ConstraintValidatorContext constraintValidatorContext) {
-        if (email == null) {
-            return true;
+    override fun isValid(email: String?, constraintValidatorContext: ConstraintValidatorContext): Boolean {
+        return if (email == null) {
+            true
         } else {
-            return !userRepository.existsByEmail(email);
+            !userRepository.existsByEmail(email)
         }
     }
 }

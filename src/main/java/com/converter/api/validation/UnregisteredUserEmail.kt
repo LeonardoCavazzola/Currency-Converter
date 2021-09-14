@@ -1,16 +1,15 @@
-package com.converter.api.validation;
+package com.converter.api.validation
 
-import javax.validation.Constraint;
-import javax.validation.Payload;
-import java.lang.annotation.*;
+import javax.validation.Constraint
+import javax.validation.Payload
+import kotlin.reflect.KClass
 
-@Constraint(validatedBy = UnregisteredUserEmailValidator.class)
-@Documented
-@Target({ElementType.FIELD})
-@Retention(RetentionPolicy.RUNTIME)
-public @interface UnregisteredUserEmail {
-
-    String message() default "There is already an user with this email";
-    Class[] groups() default { };
-    Class<? extends Payload>[] payload() default { };
-}
+@Constraint(validatedBy = [UnregisteredUserEmailValidator::class])
+@MustBeDocumented
+@Target(AnnotationTarget.FIELD)
+@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
+annotation class UnregisteredUserEmail(
+    val message: String = "There is already an user with this email",
+    val groups: Array<KClass<*>> = [],
+    val payload: Array<KClass<out Payload>> = []
+)
