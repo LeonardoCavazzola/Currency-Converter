@@ -13,11 +13,11 @@ class AuthenticationService(
 
     override fun loadUserByUsername(username: String): UserDetails {
 
-        val usuario = repository.findByEmail(username)
-        if (usuario.isPresent) {
-            return usuario.get()
+        val user = repository.findByEmail(username)
+        if (user.isPresent) {
+            return user.get()
         }
 
-        throw UsernameNotFoundException("Dados inválidos!")
+        throw UsernameNotFoundException("Invalid data!")
     }
 }

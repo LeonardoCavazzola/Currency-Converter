@@ -54,18 +54,17 @@ class ConversionService(
         val originRate = rates[originCurrency]
         val destinyRate = rates[destinyCurrency]
 
-        return try { // TODO: 14/09/2021 ver se da pra aplicar "?:"
-            val convertionRateResult = destinyRate!!.divide(originRate, 6, RoundingMode.HALF_UP)
+        val convertionRateResult = destinyRate?.divide(originRate, 6, RoundingMode.HALF_UP)
 
-            Conversion(
-                user = userService.getLoggedUser(),
-                originCur = originCurrency,
-                originValue = originValue,
-                destinyCur = destinyCurrency,
-                conversionRate = convertionRateResult)
-        } catch (e: NullPointerException) {
-            throw CurrenciesDontExistOrArentAvailableException()
-        }
+        convertionRateResult ?: throw CurrenciesDontExistOrArentAvailableException()
+
+        return Conversion(
+            user = userService.getLoggedUser(),
+            originCur = originCurrency,
+            originValue = originValue,
+            destinyCur = destinyCurrency,
+            conversionRate = convertionRateResult
+        )
     }
 
     fun create(conversion: Conversion): Conversion {
