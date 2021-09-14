@@ -17,7 +17,7 @@ data class Conversion(
     @Column(nullable = false, scale = 6, precision = 18) val conversionRate: BigDecimal,
     @Column(nullable = false) val transactionTime: LocalDateTime = LocalDateTime.now(ZoneId.of("UTC"))
 ) {
-    fun getDestinyValue() { // TODO: 14/09/2021 rever isso, porque cheira mal demais
-        originValue.multiply(conversionRate, MathContext.DECIMAL32)
+    fun getDestinyValue(): BigDecimal { // TODO: 14/09/2021 rever isso, porque cheira mal demais
+        return originValue.multiply(conversionRate, MathContext.DECIMAL32)
     }
 }
