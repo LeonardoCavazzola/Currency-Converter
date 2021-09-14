@@ -1,9 +1,8 @@
-package com.converter.api.exception;
+package com.converter.api.exception
 
-public class CurrenciesDontExistOrArentAvailableException extends RuntimeException {
+import java.lang.RuntimeException
 
-    @Override
-    public String getMessage() {
-        return "One or more currencies do not exist or are not available";
-    }
+class CurrenciesDontExistOrArentAvailableException : RuntimeException() {
+    override val message: String
+        get() = "One or more currencies do not exist or are not available"
 }

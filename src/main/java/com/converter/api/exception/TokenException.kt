@@ -1,9 +1,9 @@
-package com.converter.api.exception;
+package com.converter.api.exception
 
-public class TokenException extends RuntimeException{
+import java.lang.RuntimeException
 
-    @Override
-    public String getMessage() {
-        return "Invalid token";
-    }
+class TokenException : RuntimeException() {
+
+    override val message: String
+        get() = "Invalid token"
 }

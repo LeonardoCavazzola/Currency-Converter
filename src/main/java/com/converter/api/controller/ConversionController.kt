@@ -1,67 +1,74 @@
-package com.converter.api.controller;
+package com.converter.api.controller
 
-import com.converter.api.components.hateoas.ConversionLinkFactory;
-import com.converter.api.dto.ConversionForm;
-import com.converter.api.dto.ConversionView;
-import com.converter.api.model.Conversion;
-import com.converter.api.service.ConversionService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
-
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import java.net.URI;
+import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.RequestMapping
+import com.converter.api.components.hateoas.ConversionLinkFactory
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.util.UriComponentsBuilder
+import org.springframework.hateoas.PagedModel
+import org.springframework.hateoas.EntityModel
+import com.converter.api.dto.ConversionView
+import org.springframework.data.web.PagedResourcesAssembler
+import org.springframework.data.web.HateoasPageableHandlerMethodArgumentResolver
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import javax.validation.Valid
+import com.converter.api.dto.ConversionForm
+import com.converter.api.model.Conversion
+import com.converter.api.service.ConversionService
+import org.springframework.data.domain.Pageable
+import org.springframework.http.ResponseEntity
+import javax.transaction.Transactional
 
 @RestController
 @RequestMapping("/convertions")
-public class ConversionController {
-
-    private final ConversionService conversionService;
-    private final ConversionLinkFactory conversionLinkFactory;
-
-    public ConversionController(ConversionService conversionService, ConversionLinkFactory conversionLinkFactory) {
-        this.conversionService = conversionService;
-        this.conversionLinkFactory = conversionLinkFactory;
-    }
+open class ConversionController(
+    private val conversionService: ConversionService,
+    private val conversionLinkFactory: ConversionLinkFactory
+) {
 
     @GetMapping
-    public PagedModel<EntityModel<ConversionView>> getAll(Pageable pageable, UriComponentsBuilder builder) {
-        Page<ConversionView> page = conversionService.getMyConvetions(pageable).map(ConversionView::new);
+    fun getAll(
+        pageable: Pageable?,
+        builder: UriComponentsBuilder
+    ): PagedModel<EntityModel<ConversionView>> {
 
-        PagedResourcesAssembler<ConversionView> pra = new PagedResourcesAssembler<>(
-                new HateoasPageableHandlerMethodArgumentResolver(),
-                builder.path("/convertions").build());
+        val page = conversionService.getMyConvetions(pageable)
+            .map { conversion: Conversion ->
+                ConversionView(conversion = conversion)
+            }
 
-        PagedModel<EntityModel<ConversionView>> pagedModel = pra.toModel(page);
-        pagedModel.add(conversionLinkFactory.convert());
+        val pra = PagedResourcesAssembler<ConversionView>(
+            HateoasPageableHandlerMethodArgumentResolver(),
+            builder.path("/convertions").build()
+        )
 
-        return pagedModel;
+        val pagedModel = pra.toModel(page)
+        pagedModel.add(conversionLinkFactory.convert())
 
+        return pagedModel
     }
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ConversionView> convert(@Valid @RequestBody ConversionForm form, UriComponentsBuilder builder) {
-        Conversion converted = conversionService.convert(form.originCurrency(), form.destinyCurrency(), form.originValue());
-        converted = conversionService.create(converted);
+    open fun convert(
+        @RequestBody @Valid form: ConversionForm,
+        builder: UriComponentsBuilder
+    ): ResponseEntity<ConversionView> {
 
-        ConversionView conversionView = new ConversionView(converted);
+        var converted = conversionService.convert(form.originCurrency, form.destinyCurrency, form.originValue)
+        converted = conversionService.create(converted)
 
-        URI uri = builder
-                .path("/convertions")
-                .buildAndExpand(converted.getId())
-                .toUri();
+        val conversionView = ConversionView(converted)
 
-        conversionView.add(conversionLinkFactory.getAllMyConversions());
-        conversionView.add(conversionLinkFactory.convert());
+        val uri = builder
+            .path("/convertions")
+            .buildAndExpand(converted.id)
+            .toUri()
 
-        return ResponseEntity.created(uri).body(conversionView);
+        conversionView.add(conversionLinkFactory.allMyConversions)
+        conversionView.add(conversionLinkFactory.convert())
+
+        return ResponseEntity.created(uri).body(conversionView)
     }
 }

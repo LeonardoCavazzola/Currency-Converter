@@ -1,46 +1,52 @@
-package com.converter.api.controller;
+package com.converter.api.controller
 
-import com.converter.api.dto.ExpetionView;
-import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException;
-import com.converter.api.exception.TokenException;
-import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.http.HttpStatus
+import org.springframework.web.bind.MethodArgumentNotValidException
+import com.converter.api.dto.ExpetionView
+import org.springframework.validation.FieldError
+import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException
+import com.converter.api.exception.TokenException
+import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.bind.annotation.ResponseStatus
+import java.util.ArrayList
+import java.util.function.Consumer
 
 @RestControllerAdvice
-public class ExceptionHandlerController {
+class ExceptionHandlerController {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public List<ExpetionView> handle(MethodArgumentNotValidException exception) {
-        List<ExpetionView> dto = new ArrayList<>();
+    @ExceptionHandler(MethodArgumentNotValidException::class)
+    fun handle(exception: MethodArgumentNotValidException): List<ExpetionView> {
 
-        List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-        fieldErrors.forEach(e -> {
-            ExpetionView error = new ExpetionView(e.getField(), e.getDefaultMessage());
-            dto.add(error);
-        });
-        return dto;
+        val dto: MutableList<ExpetionView> = ArrayList()
+        val fieldErrors = exception.bindingResult.fieldErrors
+
+        fieldErrors.forEach(Consumer { e: FieldError ->
+            val error = ExpetionView(
+                field = e.field,
+                error = e.defaultMessage
+            )
+            dto.add(error)
+        })
+        return dto
     }
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CurrenciesDontExistOrArentAvailableException.class)
-    public ExpetionView handle(CurrenciesDontExistOrArentAvailableException exception) {
-
-        return new ExpetionView("originCurrency and/or destinyCurrency", exception.getMessage());
+    @ExceptionHandler(CurrenciesDontExistOrArentAvailableException::class)
+    fun handle(exception: CurrenciesDontExistOrArentAvailableException): ExpetionView {
+        return ExpetionView(
+            field = "originCurrency and/or destinyCurrency",
+            error = exception.message
+        )
     }
 
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(TokenException.class)
-    public ExpetionView handle(TokenException exception) {
-
-        return new ExpetionView("Bearer Token", exception.getMessage());
+    @ExceptionHandler(TokenException::class)
+    fun handle(exception: TokenException): ExpetionView {
+        return ExpetionView(
+            field = "Bearer Token",
+            error = exception.message
+        )
     }
-
 }
