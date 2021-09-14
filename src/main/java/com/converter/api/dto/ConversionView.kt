@@ -1,32 +1,28 @@
-package com.converter.api.dto;
+package com.converter.api.dto
 
-import com.converter.api.model.Conversion;
-import lombok.Getter;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.RepresentationModel
+import com.converter.api.model.Conversion
+import java.math.BigDecimal
+import java.time.LocalDateTime
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+class ConversionView(conversion: Conversion) : RepresentationModel<ConversionView?>() {
+    val id: Long?
+    val userId: Long?
+    val originCurrency: String
+    val originValue: BigDecimal
+    val destinyCurrency: String
+    val destinyValue: BigDecimal
+    val conversionRate: BigDecimal
+    val transactionTime: LocalDateTime
 
-@Getter
-public class ConversionView extends RepresentationModel<ConversionView> {
-
-    private final Long id;
-    private final Long userId;
-    private final String originCurrency;
-    private final BigDecimal originValue;
-    private final String destinyCurrency;
-    private final BigDecimal destinyValue;
-    private final BigDecimal conversionRate;
-    private final LocalDateTime transactionTime;
-
-    public ConversionView(Conversion conversion) {
-        this.id = conversion.getId();
-        this.userId = conversion.getUser().getId();
-        this.originCurrency = conversion.getOriginCur();
-        this.originValue = conversion.getOriginValue();
-        this.destinyCurrency = conversion.getDestinyCur();
-        this.destinyValue = conversion.getDestinyValue();
-        this.conversionRate = conversion.getConversionRate();
-        this.transactionTime = conversion.getTransactionTime();
+    init { // TODO: 14/09/2021 isso é uma boa pratica?
+        id = conversion.id
+        userId = conversion.user.id
+        originCurrency = conversion.originCur
+        originValue = conversion.originValue
+        destinyCurrency = conversion.destinyCur
+        destinyValue = conversion.getDestinyValue()
+        conversionRate = conversion.conversionRate
+        transactionTime = conversion.transactionTime
     }
 }

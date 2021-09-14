@@ -1,12 +1,12 @@
-package com.converter.api.dto;
+package com.converter.api.dto
 
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 
-public record AuthForm(
-        String email,
-        String password) {
-
-    public UsernamePasswordAuthenticationToken toUsernamePasswordAuthenticationToken() {
-        return new UsernamePasswordAuthenticationToken(email, password);
+data class AuthForm(
+    val email: String,
+    val password: String
+) {
+    fun toUsernamePasswordAuthenticationToken(): UsernamePasswordAuthenticationToken {
+        return UsernamePasswordAuthenticationToken(email, password)
     }
 }

@@ -1,6 +1,6 @@
-package com.converter.api.dto;
+package com.converter.api.dto
 
-public record AuthView(
-        String token,
-        String type) {
-}
+data class AuthView(
+    val token: String,
+    val type: String
+)

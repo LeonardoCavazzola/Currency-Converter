@@ -1,10 +1,9 @@
-package com.converter.api.dto;
+package com.converter.api.dto
 
-import java.math.BigDecimal;
-import java.util.Map;
+import java.math.BigDecimal
 
-public record RatesResponse(
-        Boolean success,
-        String base,
-        Map<String, BigDecimal> rates) {
-}
+data class RatesResponse(
+    val success: Boolean,
+    val base: String,
+    val rates: Map<String, BigDecimal>
+)

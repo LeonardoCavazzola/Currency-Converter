@@ -1,15 +1,13 @@
-package com.converter.api.dto;
+package com.converter.api.dto
 
-import com.converter.api.model.User;
-import lombok.Getter;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.RepresentationModel
+import com.converter.api.model.User
 
-@Getter
-public class UserView extends RepresentationModel<UserView> {
+class UserView(user: User) : RepresentationModel<UserView>() {
 
-    private final String email;
+    val email: String
 
-    public UserView(User user) {
-        this.email = user.getEmail();
+    init { // TODO: 14/09/2021 isso é uma boa pratica?
+        email = user.email
     }
 }
