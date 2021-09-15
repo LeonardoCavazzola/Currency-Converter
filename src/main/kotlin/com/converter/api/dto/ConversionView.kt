@@ -6,14 +6,14 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 class ConversionView(conversion: Conversion) : RepresentationModel<ConversionView?>() {
-    private val id: Long?
-    private val userId: Long?
-    private val originCurrency: String
-    private val originValue: BigDecimal
-    private val destinyCurrency: String
-    private val destinyValue: BigDecimal
-    private val conversionRate: BigDecimal
-    private val transactionTime: LocalDateTime
+    val id: Long?
+    val userId: Long?
+    val originCurrency: String
+    val originValue: BigDecimal
+    val destinyCurrency: String
+    val destinyValue: BigDecimal
+    val conversionRate: BigDecimal
+    val transactionTime: LocalDateTime
 
     init { // TODO: 14/09/2021 isso é uma boa pratica?
         id = conversion.id
