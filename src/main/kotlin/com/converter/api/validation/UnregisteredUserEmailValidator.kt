@@ -6,13 +6,9 @@ import javax.validation.ConstraintValidatorContext
 
 class UnregisteredUserEmailValidator(
     private val userRepository: UserRepository
-) : ConstraintValidator<UnregisteredUserEmail, String?> {
+) : ConstraintValidator<UnregisteredUserEmail, String> {
 
-    override fun isValid(email: String?, constraintValidatorContext: ConstraintValidatorContext): Boolean {
-        return if (email == null) {
-            true
-        } else {
-            !userRepository.existsByEmail(email)
-        }
+    override fun isValid(email: String, constraintValidatorContext: ConstraintValidatorContext): Boolean {
+        return !userRepository.existsByEmail(email)
     }
 }

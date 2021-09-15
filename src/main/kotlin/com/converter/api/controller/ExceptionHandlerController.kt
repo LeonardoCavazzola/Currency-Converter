@@ -25,7 +25,7 @@ class ExceptionHandlerController {
         fieldErrors.forEach(Consumer { e: FieldError ->
             val error = ExpetionView(
                 field = e.field,
-                error = e.defaultMessage
+                error = e.defaultMessage!!
             )
             dto.add(error)
         })

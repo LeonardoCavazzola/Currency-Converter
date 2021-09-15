@@ -16,19 +16,22 @@ import javax.transaction.Transactional
 
 @RestController
 @RequestMapping("/users")
-open class UserController(
+class UserController(
     private val userService: UserService,
     private val userLinkFactory: UserLinkFactory
 ) {
 
     @PostMapping
     @Transactional
-    open fun create(@RequestBody form: @Valid UserForm, builder: UriComponentsBuilder): ResponseEntity<UserView> {
+    fun create(
+        @RequestBody @Valid form: UserForm,
+        builder: UriComponentsBuilder
+    ): ResponseEntity<UserView> {
 
         val user = userService.create(
             User(
-                email = form.email,
-                password = form.password
+                email = form.email!!,
+                password = form.password!!
             )
         )
         val uri = builder

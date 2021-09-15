@@ -1,19 +1,15 @@
 package com.converter.api.model
 
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.core.GrantedAuthority
-import java.util.ArrayList
+import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 @Entity
 data class User(
-
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
     @Column(nullable = false) val email: String,
     @Column(nullable = false) private val password: String,
     @ManyToMany(fetch = FetchType.EAGER) val authoritys: List<Authority> = mutableListOf()
-
 ) : UserDetails {
 
     override fun getAuthorities(): Collection<GrantedAuthority?> {
