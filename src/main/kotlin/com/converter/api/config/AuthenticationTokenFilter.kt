@@ -24,7 +24,7 @@ class AuthenticationTokenFilter(
 
         val token = recoverToken(request)
         if (tokenService.isValidToken(token)) {
-            autenticateUser(token)
+            autenticateUser(token!!)
         }
         filterChain.doFilter(request, response)
     }
@@ -41,12 +41,12 @@ class AuthenticationTokenFilter(
         }
     }
 
-    private fun recoverToken(request: HttpServletRequest): String {
+    private fun recoverToken(request: HttpServletRequest): String? {
 
         val token = request.getHeader("Authorization")
 
         return if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
-            throw TokenException()
+            null
         } else
             token.substring(7, token.length)
     }

@@ -32,7 +32,7 @@ class TokenService {
             .setSubject(id.toString())
             .setIssuedAt(today)
             .setExpiration(expirationDate)
-            .signWith(SignatureAlgorithm.HS256, secret.toByteArray())
+            .signWith(SignatureAlgorithm.HS256, secret)
             .compact()
     }
 
