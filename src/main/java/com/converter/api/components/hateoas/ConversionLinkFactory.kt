@@ -1,28 +1,29 @@
-package com.converter.api.components.hateoas;
+package com.converter.api.components.hateoas
 
-import com.converter.api.controller.ConversionController;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.stereotype.Component;
+import com.converter.api.controller.ConversionController
+import org.springframework.hateoas.Link
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
+import org.springframework.stereotype.Component
 
 @Component
-public class ConversionLinkFactory {
+class ConversionLinkFactory {
 
-    public Link getAllMyConversions(){
+    fun getAllMyConversions(): Link {
         return WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder
-                        .methodOn(ConversionController.class)
-                        .getAll(null, null))
-                .withRel("getAllMyConversions")
-                .withType("get");
+            WebMvcLinkBuilder
+                .methodOn(ConversionController::class.java)
+                .getAll(null, null))
+            .withRel("getAllMyConversions")
+            .withType("get")
     }
 
-    public Link convert(){
+    fun convert(): Link {
         return WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder
-                        .methodOn(ConversionController.class)
-                        .convert(null,null))
-                .withRel("newConversion")
-                .withType("post");
+            WebMvcLinkBuilder
+                .methodOn(ConversionController::class.java)
+                .convert(null, null)
+        )
+            .withRel("newConversion")
+            .withType("post")
     }
 }

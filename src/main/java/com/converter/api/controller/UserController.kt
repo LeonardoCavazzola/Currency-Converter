@@ -37,7 +37,7 @@ open class UserController(
             .toUri()
 
         val userView = UserView(user = user)
-        userView.add(userLinkFactory.authLink)
+        userView.add(userLinkFactory.authenticate())
         return ResponseEntity.created(uri).body(userView)
     }
 }

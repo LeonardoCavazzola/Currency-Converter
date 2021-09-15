@@ -1,20 +1,20 @@
-package com.converter.api.components.hateoas;
+package com.converter.api.components.hateoas
 
-import com.converter.api.controller.AuthenticationController;
-import com.converter.api.controller.ConversionController;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.stereotype.Component;
+import com.converter.api.controller.AuthenticationController
+import org.springframework.hateoas.Link
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder
+import org.springframework.stereotype.Component
 
 @Component
-public class UserLinkFactory {
+class UserLinkFactory {
 
-    public Link getAuthLink(){
+    fun authenticate(): Link {
         return WebMvcLinkBuilder.linkTo(
-                WebMvcLinkBuilder
-                        .methodOn(AuthenticationController.class)
-                        .autenticar(null))
-                .withRel("authenticate")
-                .withType("post");
+            WebMvcLinkBuilder
+                .methodOn(AuthenticationController::class.java)
+                .authenticate(null)
+        )
+            .withRel("authenticate")
+            .withType("post")
     }
 }

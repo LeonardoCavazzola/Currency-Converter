@@ -30,7 +30,7 @@ open class ConversionController(
     @GetMapping
     fun getAll(
         pageable: Pageable?,
-        builder: UriComponentsBuilder
+        builder: UriComponentsBuilder?
     ): PagedModel<EntityModel<ConversionView>> {
 
         val page = conversionService.getMyConvetions(pageable)
@@ -40,7 +40,7 @@ open class ConversionController(
 
         val pra = PagedResourcesAssembler<ConversionView>(
             HateoasPageableHandlerMethodArgumentResolver(),
-            builder.path("/convertions").build()
+            builder?.path("/convertions")?.build()
         )
 
         val pagedModel = pra.toModel(page)
@@ -52,23 +52,23 @@ open class ConversionController(
     @PostMapping
     @Transactional
     open fun convert(
-        @RequestBody @Valid form: ConversionForm,
-        builder: UriComponentsBuilder
+        @RequestBody @Valid form: ConversionForm?,
+        builder: UriComponentsBuilder?
     ): ResponseEntity<ConversionView> {
 
-        var converted = conversionService.convert(form.originCurrency, form.destinyCurrency, form.originValue)
+        var converted = conversionService.convert(form!!.originCurrency, form.destinyCurrency, form.originValue)
         converted = conversionService.create(converted)
 
         val conversionView = ConversionView(converted)
 
         val uri = builder
-            .path("/convertions")
-            .buildAndExpand(converted.id)
-            .toUri()
+            ?.path("/convertions")
+            ?.buildAndExpand(converted.id)
+            ?.toUri()
 
-        conversionView.add(conversionLinkFactory.allMyConversions)
+        conversionView.add(conversionLinkFactory.getAllMyConversions())
         conversionView.add(conversionLinkFactory.convert())
 
-        return ResponseEntity.created(uri).body(conversionView)
+        return ResponseEntity.created(uri!!).body(conversionView)
     }
 }

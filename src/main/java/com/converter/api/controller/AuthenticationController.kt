@@ -20,8 +20,8 @@ class AuthenticationController(
 ) {
 
     @PostMapping
-    fun autenticar(@RequestBody @Valid form: AuthForm): ResponseEntity<AuthView> {
-        val dadosLogin = form.toUsernamePasswordAuthenticationToken()
+    fun authenticate(@RequestBody @Valid form: AuthForm?): ResponseEntity<AuthView> {
+        val dadosLogin = form?.toUsernamePasswordAuthenticationToken()
 
         return try {
             val authentication = authManager.authenticate(dadosLogin)
