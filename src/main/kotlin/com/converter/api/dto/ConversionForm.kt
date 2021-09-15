@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
 data class ConversionForm(
-    @NotNull @NotBlank @Size(min = 3, max = 3) val originCurrency: String,
-    @NotNull val originValue: BigDecimal,
-    @NotNull @NotBlank @Size(min = 3, max = 3) val destinyCurrency: String
+    @field:NotNull @field:NotBlank @field:Size(min = 3, max = 3) val originCurrency: String?,
+    @field:NotNull val originValue: BigDecimal?,
+    @field:NotNull @field:NotBlank @field:Size(min = 3, max = 3) val destinyCurrency: String?
 )

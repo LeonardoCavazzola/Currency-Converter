@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Profile
+import org.springframework.web.client.RestTemplate
 
 @SpringBootApplication
 class ConverterApplication {
@@ -21,10 +22,16 @@ class ConverterApplication {
         }
     }
 
+    @Bean
+    fun restTemplate(): RestTemplate {
+        return RestTemplate()
+    }
+
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
             SpringApplication.run(ConverterApplication::class.java, *args)
         }
     }
+
 }

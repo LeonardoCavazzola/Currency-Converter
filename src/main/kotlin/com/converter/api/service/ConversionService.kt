@@ -19,16 +19,19 @@ import java.util.concurrent.atomic.AtomicReference
 class ConversionService(
     private val conversionRepository: ConversionRepository,
     private val userService: UserService,
-    @Value("\${api.key}") private val key: String
+    private val client: RestTemplate
 ) {
-    private val client = RestTemplate() // TODO: 14/09/2021 fazer um @Bean
+
+    @Value("\${api.key}")
+    private lateinit var key: String
 
     fun getRates(vararg currencies: String): RatesResponse {
 
         val path = "http://api.exchangeratesapi.io" +
                 "/v1" +
                 "/latest" +
-                "?access_key=" + key +
+                "?access_key=" +
+                key +
                 "&symbols="
 
         val url = AtomicReference(path)
@@ -41,7 +44,7 @@ class ConversionService(
             RatesResponse::class.java
         )
 
-        return response.body
+        return response.body!!
     }
 
     fun getMyConvetions(pageable: Pageable?): Page<Conversion> {

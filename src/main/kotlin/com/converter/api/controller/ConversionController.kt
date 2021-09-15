@@ -22,7 +22,7 @@ import javax.transaction.Transactional
 
 @RestController
 @RequestMapping("/convertions")
-open class ConversionController(
+class ConversionController(
     private val conversionService: ConversionService,
     private val conversionLinkFactory: ConversionLinkFactory
 ) {
@@ -35,7 +35,9 @@ open class ConversionController(
 
         val page = conversionService.getMyConvetions(pageable)
             .map { conversion: Conversion ->
-                ConversionView(conversion = conversion)
+                ConversionView(
+                    conversion = conversion
+                )
             }
 
         val pra = PagedResourcesAssembler<ConversionView>(
@@ -51,15 +53,24 @@ open class ConversionController(
 
     @PostMapping
     @Transactional
-    open fun convert(
+    fun convert(
         @RequestBody @Valid form: ConversionForm?,
         builder: UriComponentsBuilder?
     ): ResponseEntity<ConversionView> {
 
-        var converted = conversionService.convert(form!!.originCurrency, form.destinyCurrency, form.originValue)
-        converted = conversionService.create(converted)
+        var converted = conversionService.convert(
+            originCurrency = form!!.originCurrency!!,
+            destinyCurrency = form.destinyCurrency!!,
+            originValue = form.originValue!!
+        )
 
-        val conversionView = ConversionView(converted)
+        converted = conversionService.create(
+            conversion = converted
+        )
+
+        val conversionView = ConversionView(
+            conversion = converted
+        )
 
         val uri = builder
             ?.path("/convertions")
