@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service
 interface UserService {
 
     fun getLoggedUser(): User
-    fun create(user: User): User
+    fun create(email: String, password: String): User
 }

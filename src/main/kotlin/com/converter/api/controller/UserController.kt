@@ -1,18 +1,17 @@
 package com.converter.api.controller
 
-import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.bind.annotation.RequestMapping
-import com.converter.api.service.UserService
 import com.converter.api.components.hateoas.UserLinkFactory
+import com.converter.api.dto.UserForm
+import com.converter.api.dto.UserView
+import com.converter.api.service.UserService
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import javax.validation.Valid
-import com.converter.api.dto.UserForm
+import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.util.UriComponentsBuilder
-import org.springframework.http.ResponseEntity
-import com.converter.api.dto.UserView
-import com.converter.api.model.User
 import javax.transaction.Transactional
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("/users")
@@ -29,11 +28,10 @@ class UserController(
     ): ResponseEntity<UserView> {
 
         val user = userService.create(
-            User(
-                email = form.email!!,
-                password = form.password!!
-            )
+            email = form.email!!,
+            password = form.password!!
         )
+
         val uri = builder
             .path("/users")
             .buildAndExpand(user.id)

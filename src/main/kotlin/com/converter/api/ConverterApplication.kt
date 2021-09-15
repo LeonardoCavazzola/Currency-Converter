@@ -1,6 +1,5 @@
 package com.converter.api
 
-import com.converter.api.model.User
 import com.converter.api.service.UserService
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
@@ -16,10 +15,8 @@ class ConverterApplication {
     fun generateDevUser(userService: UserService): CommandLineRunner {
         return CommandLineRunner { args: Array<String?>? ->
             userService.create(
-                User(
-                    email = "email@email.com",
-                    password = "12345678"
-                )
+                email = "email@email.com",
+                password = "12345678"
             )
         }
     }
