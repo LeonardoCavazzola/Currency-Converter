@@ -8,7 +8,7 @@ class UnregisteredUserEmailValidator(
     private val userRepository: UserRepository
 ) : ConstraintValidator<UnregisteredUserEmail, String> {
 
-    override fun isValid(email: String, constraintValidatorContext: ConstraintValidatorContext): Boolean {
+    override fun isValid(email: String, constraintValidatorContext: ConstraintValidatorContext?): Boolean {
         return !userRepository.existsByEmail(email)
     }
 }
