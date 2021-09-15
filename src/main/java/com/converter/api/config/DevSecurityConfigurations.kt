@@ -1,51 +1,41 @@
-package com.converter.api.config;
+package com.converter.api.config
 
-import com.converter.api.service.AuthenticationService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import com.converter.api.service.AuthenticationService
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.config.annotation.web.builders.WebSecurity
 
 @Profile("dev")
 @EnableWebSecurity
 @Configuration
-public class DevSecurityConfigurations extends WebSecurityConfigurerAdapter {
+open class DevSecurityConfigurations(
+    private val authenticationService: AuthenticationService
+) : WebSecurityConfigurerAdapter() {
 
-    private final AuthenticationService authenticationService;
-
-    public DevSecurityConfigurations(AuthenticationService authenticationService) {
-        this.authenticationService = authenticationService;
-    }
-
-    @Override
     @Bean
-    protected AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    override fun authenticationManager(): AuthenticationManager {
+        return super.authenticationManager()
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
+    override fun configure(auth: AuthenticationManagerBuilder) {
+        auth.userDetailsService(authenticationService).passwordEncoder(BCryptPasswordEncoder())
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    override fun configure(http: HttpSecurity) {
         http.authorizeRequests()
-                .anyRequest().permitAll()
-                .and()
-                .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+            .anyRequest().permitAll()
+            .and()
+            .csrf().disable()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
     }
 
-    @Override
-    public void configure(WebSecurity web) {
-    }
-
+    override fun configure(web: WebSecurity) {}
 }

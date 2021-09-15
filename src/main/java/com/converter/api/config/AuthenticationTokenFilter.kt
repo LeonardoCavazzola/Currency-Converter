@@ -1,60 +1,53 @@
-package com.converter.api.config;
+package com.converter.api.config
 
-import com.converter.api.exception.TokenException;
-import com.converter.api.model.User;
-import com.converter.api.repository.UserRepository;
-import com.converter.api.service.TokenService;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.filter.OncePerRequestFilter;
+import com.converter.api.repository.UserRepository
+import org.springframework.web.filter.OncePerRequestFilter
+import javax.servlet.http.HttpServletRequest
+import javax.servlet.http.HttpServletResponse
+import javax.servlet.FilterChain
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
+import java.util.NoSuchElementException
+import com.converter.api.exception.TokenException
+import com.converter.api.service.TokenService
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.NoSuchElementException;
+class AuthenticationTokenFilter(
+    private val tokenService: TokenService,
+    private val userRepository: UserRepository
+) : OncePerRequestFilter() {
 
-public class AuthenticationTokenFilter extends OncePerRequestFilter {
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
 
-    private final TokenService tokenService;
-    private final UserRepository userRepository;
-
-    public AuthenticationTokenFilter(TokenService tokenService, UserRepository userRepository) {
-        this.tokenService = tokenService;
-        this.userRepository = userRepository;
-    }
-
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-            throws ServletException, IOException {
-
-        String token = recoverToken(request);
-        boolean isValid = tokenService.isValidToken(token);
-        if (isValid) {
-            autenticateUser(token);
+        val token = recoverToken(request)
+        if (tokenService.isValidToken(token)) {
+            autenticateUser(token)
         }
-
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request, response)
     }
 
-    private void autenticateUser(String token) {
-        Long userId = tokenService.getUserId(token);
+    private fun autenticateUser(token: String) {
+        val userId = tokenService.getUserId(token)
+
         try {
-            User user = userRepository.findById(userId).get();
-            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (NoSuchElementException e){
-            throw new TokenException();
+            val user = userRepository.findById(userId).get()
+            val authentication = UsernamePasswordAuthenticationToken(user, null, user.authorities)
+            SecurityContextHolder.getContext().authentication = authentication
+        } catch (e: NoSuchElementException) {
+            throw TokenException()
         }
     }
 
-    private String recoverToken(HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
-            return null;
-        }
+    private fun recoverToken(request: HttpServletRequest): String {
 
-        return token.substring(7, token.length());
+        val token = request.getHeader("Authorization")
+
+        return if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
+            throw TokenException()
+        } else
+            token.substring(7, token.length)
     }
 }
