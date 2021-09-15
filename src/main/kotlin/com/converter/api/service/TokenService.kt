@@ -9,10 +9,13 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class TokenService(
-    @Value("\${jwt.expiration}") private val expiration: String,
-    @Value("\${jwt.secret}") private val secret: String
-) {
+class TokenService {
+
+    @Value("\${jwt.expiration}")
+    private lateinit var expiration: String
+
+    @Value("\${jwt.secret}")
+    private lateinit var secret: String
 
     fun generateToken(authentication: Authentication): String {
 
@@ -29,7 +32,7 @@ class TokenService(
             .setSubject(id.toString())
             .setIssuedAt(today)
             .setExpiration(expirationDate)
-            .signWith(SignatureAlgorithm.HS256, secret)
+            .signWith(SignatureAlgorithm.HS256, secret.toByteArray())
             .compact()
     }
 

@@ -10,7 +10,6 @@ import com.converter.api.dto.AuthForm
 import org.springframework.http.ResponseEntity
 import com.converter.api.dto.AuthView
 import com.converter.api.service.TokenService
-import org.springframework.security.core.AuthenticationException
 
 @RestController
 @RequestMapping("/auth")
@@ -23,13 +22,8 @@ class AuthenticationController(
     fun authenticate(@RequestBody @Valid form: AuthForm?): ResponseEntity<AuthView> {
         val dadosLogin = form?.toUsernamePasswordAuthenticationToken()
 
-        return try {
-            val authentication = authManager.authenticate(dadosLogin)
-            val token = tokenService.generateToken(authentication)
-            ResponseEntity.ok(AuthView(token, "Bearer"))
-
-        } catch (e: AuthenticationException) {
-            ResponseEntity.badRequest().build()
-        }
+        val authentication = authManager.authenticate(dadosLogin)
+        val token = tokenService.generateToken(authentication)
+        return ResponseEntity.ok(AuthView(token, "Bearer"))
     }
 }
