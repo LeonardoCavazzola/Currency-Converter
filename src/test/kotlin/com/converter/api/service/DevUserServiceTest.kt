@@ -9,6 +9,7 @@ import org.springframework.test.context.ActiveProfiles
 @SpringBootTest
 @ActiveProfiles("dev")
 internal class DevUserServiceTest {
+
     @Autowired
     private val devUserService: DevUserService? = null
 
@@ -16,5 +17,16 @@ internal class DevUserServiceTest {
     fun getLoggedUser() {
         val (id) = devUserService!!.getLoggedUser()
         Assertions.assertEquals(java.lang.Long.valueOf("1"), id)
+    }
+
+    @Test
+    fun mustEncryptThePassword() {
+
+        val user = devUserService!!.create(
+            email = "a@a.com",
+            password = "12345678"
+        )
+
+        Assertions.assertNotEquals("12345678", user.password)
     }
 }
