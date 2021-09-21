@@ -7,7 +7,7 @@ class UserView(user: User) : RepresentationModel<UserView>() {
 
     val email: String
 
-    init { // TODO: 14/09/2021 isso é uma boa pratica?
+    init { // TODO: Segue a mesma linha da classe ConversionView.kt
         email = user.email
     }
 }

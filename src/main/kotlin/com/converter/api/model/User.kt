@@ -12,35 +12,22 @@ data class User(
     @ManyToMany(fetch = FetchType.EAGER) val authoritys: List<Authority> = mutableListOf()
 ) : UserDetails {
 
-    override fun getAuthorities(): Collection<GrantedAuthority?> {
-        return authoritys
-    }
+    override fun getAuthorities(): Collection<GrantedAuthority?> = authoritys
 
-    override fun getPassword(): String {
-        return password
-    }
+    override fun getPassword() =  password
 
-    override fun getUsername(): String {
-        return email
-    }
+    override fun getUsername() = email
 
-    override fun isAccountNonExpired(): Boolean {
-        return true
-    }
+    override fun isAccountNonExpired() = true
 
-    override fun isAccountNonLocked(): Boolean {
-        return true
-    }
+    override fun isAccountNonLocked()=  true
 
-    override fun isCredentialsNonExpired(): Boolean {
-        return true
-    }
+    override fun isCredentialsNonExpired() = true
 
-    override fun isEnabled(): Boolean {
-        return true
-    }
+    override fun isEnabled() = true
 
     companion object {
-        private const val serialVersionUID = 1L
+        // Geralmente o Padrão é que fique dessa forma
+        private const val SERIAL_VERSION_UID = 1L
     }
 }

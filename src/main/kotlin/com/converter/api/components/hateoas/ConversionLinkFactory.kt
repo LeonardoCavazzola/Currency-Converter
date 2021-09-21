@@ -8,22 +8,20 @@ import org.springframework.stereotype.Component
 @Component
 class ConversionLinkFactory {
 
-    fun getAllMyConversions(): Link {
-        return WebMvcLinkBuilder.linkTo(
+    fun getAllMyConversions() = WebMvcLinkBuilder.linkTo(
             WebMvcLinkBuilder
                 .methodOn(ConversionController::class.java)
-                .getAll(null, null))
+                .getAll())
             .withRel("getAllMyConversions")
             .withType("get")
-    }
 
-    fun convert(): Link {
-        return WebMvcLinkBuilder.linkTo(
+
+    fun convert(): Link  =
+         WebMvcLinkBuilder.linkTo(
             WebMvcLinkBuilder
                 .methodOn(ConversionController::class.java)
-                .convert(null, null)
-        )
+                .convert())
             .withRel("newConversion")
             .withType("post")
-    }
+
 }

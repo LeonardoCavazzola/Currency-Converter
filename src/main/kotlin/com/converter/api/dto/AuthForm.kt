@@ -6,7 +6,5 @@ data class AuthForm(
     val email: String,
     val password: String
 ) {
-    fun toUsernamePasswordAuthenticationToken(): UsernamePasswordAuthenticationToken {
-        return UsernamePasswordAuthenticationToken(email, password)
-    }
+    fun toUsernamePasswordAuthenticationToken() = UsernamePasswordAuthenticationToken(email, password)
 }

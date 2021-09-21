@@ -10,12 +10,13 @@ abstract class AbstractUserService(
     protected val userRepository: UserRepository
 ) : UserService {
 
-    override fun create(email: String, password: String): User {
-        return userRepository.save(
-            User(
-                email = email,
-                password = BCryptPasswordEncoder().encode(password)
-            )
+    override fun create(
+        email: String,
+        password: String
+    ) = userRepository.save(
+        User(
+            email = email,
+            password = BCryptPasswordEncoder().encode(password)
         )
-    }
+    )
 }

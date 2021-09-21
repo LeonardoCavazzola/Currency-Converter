@@ -8,13 +8,12 @@ import org.springframework.stereotype.Component
 @Component
 class UserLinkFactory {
 
-    fun authenticate(): Link {
-        return WebMvcLinkBuilder.linkTo(
+    fun authenticate(): Link  =  WebMvcLinkBuilder.linkTo(
             WebMvcLinkBuilder
                 .methodOn(AuthenticationController::class.java)
-                .authenticate(null)
+                .authenticate()
         )
             .withRel("authenticate")
             .withType("post")
-    }
+
 }
