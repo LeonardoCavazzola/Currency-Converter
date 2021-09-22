@@ -16,6 +16,7 @@ internal class ConversionServiceTest {
 
     @Test
     fun getRates() {
+        // TODO man acho que esse teste poderia ser um teste mockado não acha ?
         val rates = conversionService!!.getRates("BRL", "USD", "EUR")
         Assertions.assertTrue(rates.success)
         Assertions.assertNotNull(rates.rates["BRL"])
@@ -25,6 +26,8 @@ internal class ConversionServiceTest {
 
     @Test
     fun convert() {
+        // TODO man acho que esse teste poderia ser um teste mockado não acha ?
+
         val (_, _, originCur, originValue, destinyCur, conversionRate, transactionTime) = conversionService!!.convert(
             "BRL",
             "USD",

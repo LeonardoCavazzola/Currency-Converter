@@ -1,6 +1,7 @@
 package com.converter.api.service
 
 import com.converter.api.model.User
+import io.jsonwebtoken.JwtParser
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import org.springframework.beans.factory.annotation.Value
@@ -36,17 +37,17 @@ class TokenService {
             .compact()
     }
 
-    fun isValidToken(token: String?): Boolean {
-        return try {
-            Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
-            true
-        } catch (e: Exception) {
-            false
-        }
+    fun isValidToken(token: String?) = try {
+        Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
+        true
+    } catch (e: Exception) {
+        false
     }
 
-    fun getUserId(token: String?): Long {
-        val claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).body
-        return claims.subject.toLong()
-    }
+    fun getUserId(token: String?): Long = Jwts.parser()
+        .setSigningKey(secret)
+        .parseClaimsJws(token)
+        .body.let {
+            it.subject.toLong()
+        }
 }

@@ -29,8 +29,8 @@ class ConversionController(
 
     @GetMapping
     fun getAll(
-        pageable: Pageable?,
-        builder: UriComponentsBuilder?
+        pageable: Pageable? = null,
+        builder: UriComponentsBuilder? = null
     ): PagedModel<EntityModel<ConversionView>> {
 
         val page = conversionService.getMyConvetions(pageable)
@@ -54,8 +54,8 @@ class ConversionController(
     @PostMapping
     @Transactional
     fun convert(
-        @RequestBody @Valid form: ConversionForm?,
-        builder: UriComponentsBuilder?
+        @RequestBody @Valid form: ConversionForm? = null,
+        builder: UriComponentsBuilder? = null
     ): ResponseEntity<ConversionView> {
 
         var converted = conversionService.convert(

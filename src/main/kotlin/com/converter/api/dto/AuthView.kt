@@ -1,6 +1,6 @@
 package com.converter.api.dto
 
-data class AuthView(
+class AuthView(
     val token: String,
     val type: String
 )

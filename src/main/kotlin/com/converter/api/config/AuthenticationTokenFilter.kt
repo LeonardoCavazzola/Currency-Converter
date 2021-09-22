@@ -22,24 +22,25 @@ class AuthenticationTokenFilter(
         filterChain: FilterChain
     ) {
 
-        val token = recoverToken(request)
-        if (tokenService.isValidToken(token)) {
-            autenticateUser(token!!)
+        recoverToken(request)?.also {
+            if (tokenService.isValidToken(it)) {
+                autenticateUser(it)
+            }
+            filterChain.doFilter(request, response)
         }
-        filterChain.doFilter(request, response)
     }
 
-    private fun autenticateUser(token: String) {
-        val userId = tokenService.getUserId(token)
-
+    private fun autenticateUser(token: String) =
         try {
-            val user = userRepository.findById(userId).get()
-            val authentication = UsernamePasswordAuthenticationToken(user, null, user.authorities)
-            SecurityContextHolder.getContext().authentication = authentication
+            tokenService.getUserId(token).also {
+                val user = userRepository.findById(it).get()
+                val authentication = UsernamePasswordAuthenticationToken(user, null, user.authorities)
+                SecurityContextHolder.getContext().authentication = authentication
+            }
         } catch (e: NoSuchElementException) {
             throw TokenException()
         }
-    }
+
 
     private fun recoverToken(request: HttpServletRequest): String? {
 
