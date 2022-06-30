@@ -6,5 +6,6 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 
 interface ConversionRepository {
+    fun save(conversion: Conversion): Conversion
     fun findAllByUser(user: User, pageable: Pageable): Page<Conversion>
 }

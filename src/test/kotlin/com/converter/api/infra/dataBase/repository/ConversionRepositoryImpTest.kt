@@ -1,7 +1,7 @@
-package com.converter.api.infra.repository
+package com.converter.api.infra.dataBase.repository
 
-import com.converter.api.infra.model.ConversionModel
-import com.converter.api.infra.model.toModel
+import com.converter.api.infra.dataBase.model.ConversionModel
+import com.converter.api.infra.dataBase.model.toModel
 import com.converter.api.mocks.ConversionMocks
 import io.mockk.every
 import io.mockk.impl.annotations.InjectMockKs

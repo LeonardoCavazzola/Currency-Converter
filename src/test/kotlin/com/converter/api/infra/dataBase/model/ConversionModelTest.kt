@@ -1,9 +1,7 @@
 package com.converter.api.infra.dataBase.model
 
-import com.converter.api.infra.dataBase.model.toEntity
-import com.converter.api.infra.dataBase.model.toModel
 import com.converter.api.mocks.ConversionMocks
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class ConversionModelTest {
