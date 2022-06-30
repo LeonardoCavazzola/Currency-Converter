@@ -1,7 +1,7 @@
 package com.converter.api.mocks
 
 import com.converter.api.domain.entity.Conversion
-import com.converter.api.infra.model.ConversionModel
+import com.converter.api.infra.dataBase.model.ConversionModel
 import java.math.BigDecimal
 import java.time.ZonedDateTime
 

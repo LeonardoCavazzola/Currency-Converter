@@ -1,7 +1,7 @@
 package com.converter.api.mocks
 
 import com.converter.api.domain.entity.User
-import com.converter.api.infra.model.UserModel
+import com.converter.api.infra.dataBase.model.UserModel
 
 object UserMocks {
     fun entity() = User(

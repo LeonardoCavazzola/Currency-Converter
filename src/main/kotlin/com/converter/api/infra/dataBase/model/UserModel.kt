@@ -1,4 +1,4 @@
-package com.converter.api.infra.model
+package com.converter.api.infra.dataBase.model
 
 import com.converter.api.domain.entity.User
 import javax.persistence.Column
