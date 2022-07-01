@@ -1,11 +1,10 @@
-package com.converter.api.service
+package com.converter.api.domain.service
 
-import com.converter.api.model.User
+import com.converter.api.domain.entity.User
 import org.springframework.stereotype.Service
 
 @Service
 interface UserService {
-
-    fun getLoggedUser(): User
+    fun getAuthenticatedUser(): User
     fun create(email: String, password: String): User
 }
