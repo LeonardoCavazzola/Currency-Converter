@@ -1,9 +1,10 @@
-package com.converter.api.infra.repository
+package com.converter.api.infra.dataBase.repository
 
 import com.converter.api.domain.entity.User
 import com.converter.api.domain.repository.UserRepository
-import com.converter.api.infra.model.UserModel
-import com.converter.api.infra.model.toEntity
+import com.converter.api.infra.dataBase.model.UserModel
+import com.converter.api.infra.dataBase.model.toEntity
+import com.converter.api.infra.dataBase.model.toModel
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 
@@ -12,6 +13,8 @@ class UserRepositoryImp(
     val modelRepository: UserModelRepository
 ) : UserRepository {
     override fun findByEmail(email: String): User? = modelRepository.findByEmail(email)?.toEntity()
+
+    override fun save(user: User): User = user.also { modelRepository.save(it.toModel()) }
 
     override fun existsByEmail(email: String): Boolean = modelRepository.existsByEmail(email)
 }
