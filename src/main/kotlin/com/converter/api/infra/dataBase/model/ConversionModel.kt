@@ -14,9 +14,9 @@ import javax.persistence.ManyToOne
 data class ConversionModel(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
     @ManyToOne val user: UserModel,
-    @Column(nullable = false) val originCur: String,
+    @Column(nullable = false) val originCurrency: String,
     @Column(nullable = false, scale = 6, precision = 18) val originValue: BigDecimal,
-    @Column(nullable = false) val destinyCur: String,
+    @Column(nullable = false) val destinyCurrency: String,
     @Column(nullable = false, scale = 6, precision = 18) val conversionRate: BigDecimal,
     @Column(nullable = false) val transactionTime: ZonedDateTime,
 )
@@ -24,9 +24,9 @@ data class ConversionModel(
 fun ConversionModel.toEntity() = Conversion(
     id = id,
     user = user.toEntity(),
-    originCur = originCur,
+    originCurrency = originCurrency,
     originValue = originValue,
-    destinyCur = destinyCur,
+    destinyCurrency = destinyCurrency,
     conversionRate = conversionRate,
     transactionTime = transactionTime,
 )
@@ -34,9 +34,9 @@ fun ConversionModel.toEntity() = Conversion(
 fun Conversion.toModel() = ConversionModel(
     id = id,
     user = user.toModel(),
-    originCur = originCur,
+    originCurrency = originCurrency,
     originValue = originValue,
-    destinyCur = destinyCur,
+    destinyCurrency = destinyCurrency,
     conversionRate = conversionRate,
     transactionTime = transactionTime,
 )
