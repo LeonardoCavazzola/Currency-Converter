@@ -3,9 +3,9 @@ package com.converter.api.controller
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
-import com.converter.api.dto.ExpetionView
+import com.converter.api.controller.dto.ExceptionOutput
 import org.springframework.validation.FieldError
-import com.converter.api.exception.CurrenciesDontExistOrArentAvailableException
+import com.converter.api.exception.CurrencyDontExistOrArentAvailableException
 import com.converter.api.exception.TokenException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -17,13 +17,13 @@ class ExceptionHandlerController {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handle(exception: MethodArgumentNotValidException): List<ExpetionView> {
+    fun handle(exception: MethodArgumentNotValidException): List<ExceptionOutput> {
 
-        val dto: MutableList<ExpetionView> = ArrayList()
+        val dto: MutableList<ExceptionOutput> = ArrayList()
         val fieldErrors = exception.bindingResult.fieldErrors
 
         fieldErrors.forEach(Consumer { e: FieldError ->
-            val error = ExpetionView(
+            val error = ExceptionOutput(
                 field = e.field,
                 error = e.defaultMessage!!
             )
@@ -33,9 +33,9 @@ class ExceptionHandlerController {
     }
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(CurrenciesDontExistOrArentAvailableException::class)
-    fun handle(exception: CurrenciesDontExistOrArentAvailableException): ExpetionView {
-        return ExpetionView(
+    @ExceptionHandler(CurrencyDontExistOrArentAvailableException::class)
+    fun handle(exception: CurrencyDontExistOrArentAvailableException): ExceptionOutput {
+        return ExceptionOutput(
             field = "originCurrency and/or destinyCurrency",
             error = exception.message
         )
@@ -43,8 +43,8 @@ class ExceptionHandlerController {
 
     @ResponseStatus(code = HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(TokenException::class)
-    fun handle(exception: TokenException): ExpetionView {
-        return ExpetionView(
+    fun handle(exception: TokenException): ExceptionOutput {
+        return ExceptionOutput(
             field = "Bearer Token",
             error = exception.message
         )
