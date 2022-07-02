@@ -1,4 +1,4 @@
-package com.converter.api.dto
+package com.converter.api.controller.dto
 
 class AuthView(
     val token: String,

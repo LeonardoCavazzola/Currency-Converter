@@ -1,4 +1,4 @@
-package com.converter.api.dto
+package com.converter.api.controller.dto
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 
