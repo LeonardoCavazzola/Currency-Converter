@@ -5,6 +5,6 @@ import org.springframework.stereotype.Service
 
 @Service
 interface UserService {
-    fun getAuthenticatedUser(): User
-    fun create(email: String, password: String): User
+    fun findById(id: Long): User?
+    fun create(user: User): User
 }
