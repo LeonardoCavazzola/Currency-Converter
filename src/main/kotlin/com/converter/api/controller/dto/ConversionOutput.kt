@@ -6,7 +6,7 @@ import java.time.ZonedDateTime
 
 data class ConversionOutput(
     val id: Long?,
-    val userId: Long?,
+    val userId: String,
     val originCurrency: String,
     val originValue: BigDecimal,
     val destinyCurrency: String,
@@ -17,7 +17,7 @@ data class ConversionOutput(
 
 fun Conversion.toOutput() = ConversionOutput(
     id = id,
-    userId = user.id,
+    userId = userId,
     originCurrency = originCurrency,
     originValue = originValue,
     destinyCurrency = destinyCurrency,
