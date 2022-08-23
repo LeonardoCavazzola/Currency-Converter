@@ -42,14 +42,14 @@ internal class ConversionRepositoryImpTest {
     fun `given an user of exiting conversions, when findAllByUser, should return a page of conversions`() {
         // given
         val conversion = ConversionMocks.entity()
-        val user = conversion.user
+        val userId = conversion.userId
         val pageable = Pageable.ofSize(10)
         val modelPage = PageImpl(listOf(conversion.toModel()))
 
-        every { modelRepository.findAllByUser(any(), any()) } returns modelPage
+        every { modelRepository.findAllByUserId(any(), any()) } returns modelPage
 
         // when
-        val result = userRepositoryImp.findAllByUser(user, pageable)
+        val result = userRepositoryImp.findAllByUserId(userId, pageable)
 
         // assert
         assertEquals(conversion, result.content[0])
@@ -59,14 +59,14 @@ internal class ConversionRepositoryImpTest {
     fun `given an user of not exiting conversions, when findAllByUser, should return an empty page`() {
         // given
         val conversion = ConversionMocks.entity()
-        val user = conversion.user
+        val userId = conversion.userId
         val pageable = Pageable.ofSize(10)
         val modelPage = Page.empty<ConversionModel>()
 
-        every { modelRepository.findAllByUser(any(), any()) } returns modelPage
+        every { modelRepository.findAllByUserId(any(), any()) } returns modelPage
 
         // when
-        val result = userRepositoryImp.findAllByUser(user, pageable)
+        val result = userRepositoryImp.findAllByUserId(userId, pageable)
 
         // assert
         assertEquals(0, result.size)
