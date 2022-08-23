@@ -15,10 +15,10 @@ internal class ConversionModelTest {
 
         // assert
         assertEquals(model.id, result.id)
-        assertEquals(model.user.toEntity(), result.user)
-        assertEquals(model.originCur, result.originCur)
+        assertEquals(model.userId, result.userId)
+        assertEquals(model.originCurrency, result.originCurrency)
         assertEquals(model.originValue, result.originValue)
-        assertEquals(model.destinyCur, result.destinyCur)
+        assertEquals(model.destinyCurrency, result.destinyCurrency)
         assertEquals(model.conversionRate, result.conversionRate)
         assertEquals(model.transactionTime, result.transactionTime)
     }
@@ -33,10 +33,10 @@ internal class ConversionModelTest {
 
         // assert
         assertEquals(entity.id, result.id)
-        assertEquals(entity.user.toModel(), result.user)
-        assertEquals(entity.originCur, result.originCur)
+        assertEquals(entity.userId, result.userId)
+        assertEquals(entity.originCurrency, result.originCurrency)
         assertEquals(entity.originValue, result.originValue)
-        assertEquals(entity.destinyCur, result.destinyCur)
+        assertEquals(entity.destinyCurrency, result.destinyCurrency)
         assertEquals(entity.conversionRate, result.conversionRate)
         assertEquals(entity.transactionTime, result.transactionTime)
     }
