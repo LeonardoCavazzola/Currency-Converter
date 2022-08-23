@@ -8,20 +8,20 @@ import java.time.ZonedDateTime
 object ConversionMocks {
     fun entity() = Conversion(
         id = 1,
-        user = UserMocks.entity(),
-        originCur = "BRL",
+        userId = "1",
+        originCurrency = "BRL",
         originValue = BigDecimal.TEN,
-        destinyCur = "USD",
+        destinyCurrency = "USD",
         conversionRate = BigDecimal("1.5565465461"),
         transactionTime = ZonedDateTime.now()
     )
 
     fun model() = ConversionModel(
         id = 1,
-        user = UserMocks.model(),
-        originCur = "BRL",
+        userId = "1",
+        originCurrency = "BRL",
         originValue = BigDecimal.TEN,
-        destinyCur = "USD",
+        destinyCurrency = "USD",
         conversionRate = BigDecimal("1.5565465461"),
         transactionTime = ZonedDateTime.now()
     )
