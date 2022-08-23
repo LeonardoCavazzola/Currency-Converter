@@ -32,7 +32,7 @@ class RatesClientImp(
     }
 
     companion object {
-        const val URL = "http://api.exchangeratesapi.io/v1/latest"
+        const val URL = "http://api.exchangeratesapi.io/v1/latest?access_key={access_key}&symbols={symbols}"
     }
 }
 
