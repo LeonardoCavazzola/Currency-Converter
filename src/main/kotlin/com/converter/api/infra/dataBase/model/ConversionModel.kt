@@ -8,12 +8,11 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.ManyToOne
 
 @Entity
 data class ConversionModel(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Long? = null,
-    @ManyToOne val user: UserModel,
+    @Column(nullable = false) val userId: String,
     @Column(nullable = false) val originCurrency: String,
     @Column(nullable = false, scale = 6, precision = 18) val originValue: BigDecimal,
     @Column(nullable = false) val destinyCurrency: String,
@@ -23,7 +22,7 @@ data class ConversionModel(
 
 fun ConversionModel.toEntity() = Conversion(
     id = id,
-    user = user.toEntity(),
+    userId = userId,
     originCurrency = originCurrency,
     originValue = originValue,
     destinyCurrency = destinyCurrency,
@@ -33,7 +32,7 @@ fun ConversionModel.toEntity() = Conversion(
 
 fun Conversion.toModel() = ConversionModel(
     id = id,
-    user = user.toModel(),
+    userId = userId,
     originCurrency = originCurrency,
     originValue = originValue,
     destinyCurrency = destinyCurrency,
