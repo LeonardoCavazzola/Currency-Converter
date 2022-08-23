@@ -6,9 +6,9 @@ import java.math.MathContext
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
-data class Conversion(
+class Conversion(
     val id: Long? = null,
-    val user: User,
+    val userId: String,
     val originCurrency: String,
     val originValue: BigDecimal,
     val destinyCurrency: String,
@@ -18,5 +18,17 @@ data class Conversion(
     val destinyValue: BigDecimal
         get() = originValue.multiply(conversionRate, MathContext.UNLIMITED)
 
-    companion object : UserRetrievable
+    companion object : UserRetrievable {
+        fun fromIntent(
+            conversionIntent: ConversionIntent,
+            originRate: BigDecimal,
+            destinyRate: BigDecimal,
+        ) = Conversion(
+            userId = authenticatedUserId,
+            originCurrency = conversionIntent.originCurrency,
+            originValue = conversionIntent.originValue,
+            destinyCurrency = conversionIntent.destinyCurrency,
+            conversionRate = destinyRate.divide(originRate, MathContext.DECIMAL128)
+        )
+    }
 }
