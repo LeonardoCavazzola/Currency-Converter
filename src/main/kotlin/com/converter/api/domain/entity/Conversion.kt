@@ -18,6 +18,27 @@ class Conversion(
     val destinyValue: BigDecimal
         get() = originValue.multiply(conversionRate, MathContext.UNLIMITED)
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as Conversion
+
+        if (id != other.id) return false
+        if (userId != other.userId) return false
+        if (originCurrency != other.originCurrency) return false
+        if (originValue != other.originValue) return false
+        if (destinyCurrency != other.destinyCurrency) return false
+        if (conversionRate != other.conversionRate) return false
+        if (transactionTime != other.transactionTime) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
+
     companion object : UserRetrievable {
         fun fromIntent(
             conversionIntent: ConversionIntent,
