@@ -38,6 +38,10 @@ class Conversion(
         return id?.hashCode() ?: 0
     }
 
+    override fun toString(): String {
+        return "Conversion(id=$id, userId='$userId', originCurrency='$originCurrency', originValue=$originValue, destinyCurrency='$destinyCurrency', conversionRate=$conversionRate, transactionTime=$transactionTime, destinyValue=$destinyValue)"
+    }
+
     companion object : UserRetrievable {
         fun fromIntent(
             conversionIntent: ConversionIntent,
