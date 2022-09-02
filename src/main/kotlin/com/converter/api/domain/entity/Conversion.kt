@@ -30,7 +30,6 @@ class Conversion(
         if (originValue != other.originValue) return false
         if (destinyCurrency != other.destinyCurrency) return false
         if (conversionRate != other.conversionRate) return false
-        if (transactionTime != other.transactionTime) return false
 
         return true
     }
@@ -49,7 +48,7 @@ class Conversion(
             originCurrency = conversionIntent.originCurrency,
             originValue = conversionIntent.originValue,
             destinyCurrency = conversionIntent.destinyCurrency,
-            conversionRate = destinyRate.divide(originRate, MathContext.DECIMAL128)
+            conversionRate = destinyRate.divide(originRate, MathContext.DECIMAL32)
         )
     }
 }
