@@ -16,9 +16,10 @@ class UserIdFilter : OncePerRequestFilter() {
         filterChain: FilterChain
     ) {
         request.getHeader(USER_ID_HEADER)?.let {
-            val authentication = PreAuthenticatedAuthenticationToken(it, null)
+            val authentication = PreAuthenticatedAuthenticationToken(it, null, null)
             SecurityContextHolder.getContext().authentication = authentication
         }
+        filterChain.doFilter(request, response)
     }
 
     companion object {
