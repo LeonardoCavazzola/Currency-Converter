@@ -8,11 +8,13 @@ import io.mockk.impl.annotations.InjectMockKs
 import io.mockk.impl.annotations.MockK
 import io.mockk.junit5.MockKExtension
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
+import org.springframework.data.repository.findByIdOrNull
 
 @ExtendWith(MockKExtension::class)
 internal class ConversionRepositoryImpTest {
@@ -36,6 +38,37 @@ internal class ConversionRepositoryImpTest {
 
         // assert
         assertEquals(conversion, result)
+    }
+
+    @Test
+    fun `given an id of an exiting conversions, when findById, should return a conversion`() {
+        // given
+        val conversion = ConversionMocks.entity()
+        val id = conversion.id!!
+        val model = conversion.toModel()
+
+        every { modelRepository.findByIdOrNull(any()) } returns model
+
+        // when
+        val result = userRepositoryImp.findById(id)
+
+        // assert
+        assertEquals(conversion, result)
+    }
+
+    @Test
+    fun `given an id of a nonexistent conversions, when findById, should return null`() {
+        // given
+        val conversion = ConversionMocks.entity()
+        val id = conversion.id!!
+
+        every { modelRepository.findByIdOrNull(any()) } returns null
+
+        // when
+        val result = userRepositoryImp.findById(id)
+
+        // assert
+        assertNull(result)
     }
 
     @Test
@@ -69,6 +102,6 @@ internal class ConversionRepositoryImpTest {
         val result = userRepositoryImp.findAllByUserId(userId, pageable)
 
         // assert
-        assertEquals(0, result.size)
+        assertEquals(0, result.count())
     }
 }

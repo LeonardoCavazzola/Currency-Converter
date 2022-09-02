@@ -17,7 +17,7 @@ internal class ConversionTest {
         val result = conversion.destinyValue
 
         // assert
-        assertEquals(BigDecimal("15.5654654610"), result)
+        assertEquals(BigDecimal("15.565470000000"), result)
     }
 
     @Test

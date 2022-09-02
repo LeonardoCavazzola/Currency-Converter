@@ -10,9 +10,9 @@ object ConversionMocks {
         id = 1,
         userId = "1",
         originCurrency = "BRL",
-        originValue = BigDecimal.TEN,
+        originValue = BigDecimal("10.000000"),
         destinyCurrency = "USD",
-        conversionRate = BigDecimal("1.5565465461"),
+        conversionRate = BigDecimal("1.556547"),
         transactionTime = ZonedDateTime.now()
     )
 
@@ -20,9 +20,9 @@ object ConversionMocks {
         id = 1,
         userId = "1",
         originCurrency = "BRL",
-        originValue = BigDecimal.TEN,
+        originValue = BigDecimal("10.000000"),
         destinyCurrency = "USD",
-        conversionRate = BigDecimal("1.5565465461"),
+        conversionRate = BigDecimal("1.556547"),
         transactionTime = ZonedDateTime.now()
     )
 }
