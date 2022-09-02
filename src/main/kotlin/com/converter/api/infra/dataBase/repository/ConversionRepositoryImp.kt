@@ -8,6 +8,7 @@ import com.converter.api.infra.dataBase.model.toModel
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Repository
 
 @Repository
@@ -15,6 +16,8 @@ class ConversionRepositoryImp(
     val modelRepository: ConversionModelRepository
 ) : ConversionRepository {
     override fun save(conversion: Conversion): Conversion = modelRepository.save(conversion.toModel()).toEntity()
+
+    override fun findById(id: Long): Conversion? = modelRepository.findByIdOrNull(id)?.toEntity()
 
     override fun findAllByUserId(userId: String, pageable: Pageable): Page<Conversion> =
         modelRepository.findAllByUserId(userId, pageable).map { it.toEntity() }
