@@ -1,6 +1,7 @@
 # Currency Converter
 
 ## How To Run Application:
+* This application need to be compiled with jdk-11, more resents jdk presents problems with some dependencies versions
 * This application has two possible profiles, one for development and testing environment and other for production environment.
 * This application runs with a postgres database.
 * You need the docker running in your computer, for run in dev scope, or run tests
