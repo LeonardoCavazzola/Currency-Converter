@@ -1,61 +1,60 @@
 # Currency Converter
 
-This API is available at https://curconverter.herokuapp.com/
-
 ## How To Run Application:
-
 * This application has two possible profiles, one for development and testing environment and other for production environment.
-* This application runs with an embedded H2 database.
+* This application runs with a postgres database.
+* You need the docker running in your computer, for run in dev scope, or run tests
 
 **1** - **Running in development/testing environment:**  
-**1.1** - Access the application-dev.properties file and replace the phrase "Your key here" with your exchangeratesapi api key.  
-**1.2** - Run the main method of the ConverterApplication.java file, with the following environment variable:  
+**1.1** - Run the command to start the docker compose: "docker-compose up -d"  
+**1.2** - Export the following environment variable:  
 **1.2.1** - spring.profiles.active=dev;  
+**1.2.2** - api.key="*your exchangeratesapi api key*";  
+**1.3** - Run the main method of the ConverterApplication file;
 
 **2** - **Running in production environment:**  
-**2.1** - Run the main method of the ConverterApplication.java file, with the following environment variables:   
+**2.1** - Export the following environment variable:  
 **2.1.1** - spring.profiles.active=prod;  
-**2.1.2** - datasource.url="*url you choose to host the H2 database*";  
-**2.1.3** - datasource.user="*username to access the H2 database*";  
-**2.1.4** - datasource.password="*password to access the H2 databas*e";  
-**2.1.5** - jwt.secret="*random security string*";  
+**2.1.2** - datasource.url="*url you choose to host the Postgres database*";  
+**2.1.3** - datasource.user="*username to access the Postgres database*";  
+**2.1.4** - datasource.password="*password to access the Postgres database*";  
 **2.1.6** - api.key="*your exchangeratesapi api key*";  
-**2.1.7** - PORT="*port you want to run*";  
+**2.1.7** - port="*port you want to run*" the default is 8080;  
+**2.2** - Run the main method of the ConverterApplication file;
 
-## How To Use The Application  
+## How To Use The Application
+For all requests you need add the header "user_id", it could be set up with any value.
 
-**1** - **Create user account:**  
-**1.1** - Send a POST request to endpoint "/users" with following body:  
-**1.1.1** - email (mandatory, unique).  
-**1.1.2** - password (mandatory, have between 8 and 24 characters).  
+**1** - **Convert currencies:**  
+**1.1** - Send a POST request to endpoint "/conversions" with following body and add the user_id header:  
+**1.1.1** - originCurrency (mandatory, 3 characters).  
+**1.1.2** - originValue (mandatory, a decimal number).  
+**1.1.3** - destinyCurrency (mandatory, 3 characters).  
 **1.2** - Example:
 
-![postman com novo usuario](https://github.com/LeonardoCavazzola/currency-converter/blob/main/src/main/resources/images/new%20user2.PNG)
+```shell
+curl --location 'http://localhost:8080/conversions' \
+--header 'user_id: 1' \
+--header 'Content-Type: application/json' \
+--data '{
+    "originCurrency": "USD",
+    "originValue": 5,
+    "destinyCurrency": "BRL"
+}'
+```
 
-**2** - **Get access token:**  
-**2.1** - Send a POST request to endpoint "/auth" with following body:  
-**2.1.1** - email (mandatory).  
-**3.1.2** - password (mandatory).  
-**2.2** - Example:
+**2** - **Get my past conventions:**  
+**2.1** - Send a GET request to endpoint "/conversions" with the user_id header.  
+**2.2** - It just returns the conversions created with the same user_id.  
+**2.3** - Example:  
 
-![obtendo token no postman](https://github.com/LeonardoCavazzola/currency-converter/blob/main/src/main/resources/images/Auth.PNG)
+```shell
+curl --location 'http://localhost:8080/conversions' \
+--header 'user_id: 1'
+```
 
-**3** - **Convert currencies:**  
-**3.1** - Send a POST request to endpoint "/convertions" with following body and add the your token:  
-**3.1.1** - originCurrency (mandatory, 3 characters).  
-**3.1.2** - originValue (mandatory, a decimal number).  
-**3.1.3** - destinyCurrency (mandatory, 3 characters).  
-**3.2** - Example:
-
-![fazendo uma converção no postman](https://github.com/LeonardoCavazzola/currency-converter/blob/main/src/main/resources/images/covertion.PNG)
-
-**4** - **Get my past conventions:**  
-**4.1** - Send a GET request to endpoint "/convertions" with your token.  
-**4.2** - Example:  
-
-![obtendo historico no postman](https://github.com/LeonardoCavazzola/currency-converter/blob/main/src/main/resources/images/allcerrto.PNG)
-
-## How was developing this application (Portuguese)
+## How was developing this application (Portuguese) 
+**Não é mais valido, ele descreve a tomada de decisões da versão 1 criada em Java.**
 
 Nesse textinho pretendo expor o detalhes do desenvolvimento dessa aplicação.
 
@@ -97,7 +96,4 @@ O método convert é onde acontece a conversão das moedas, aqui a única coisa 
 
 Para complementar a camada de controllers e service na aplicação há oito DTOs, seis deles estão em records: “AuthForm” usado como corpo da requisição de autenticação, “AuthView” usado como resposta dessa requisição, “ExpetionView” usado como resposta do “AdviceController”, “UserForm” usado como corpo da requisição de cadastro de usuário, “RatesResponse” usado como resposta da exchangeratesapi, nesse record há um Map com chave String que representa o nome da moeda e o valor com tipo BigDecimal, eu optei pelo Map para que, como eu disse anteriormente, não limitar a api que estamos usando.
 
-Os outros dois estão em classe que são “ConversionView” é usado como corpo da resposta da requisição de conversão, “UserView” como corpo da resposta do cadastro de usuário, ambos são classes porque o construtor recebe apenas uma instância de seus respectivos modelos. 
-
-
-
+Os outros dois estão em classe que são “ConversionView” é usado como corpo da resposta da requisição de conversão, “UserView” como corpo da resposta do cadastro de usuário, ambos são classes porque o construtor recebe apenas uma instância de seus respectivos modelos.
